@@ -7,20 +7,17 @@
 
 namespace tt {
 
-template <typename T>
+template <typename T, typename Op = std::function<T(const T &, const T &)>>
 class SegmentTree {
- public:
-  using Op = std::function<T(const T &a, const T &b)>;
-
  private:
   std::vector<T> data_;
   int size_;
   Op op_;
-  T e_;
+  T id_;
 
   T QuerySub(int left, int right, int k, int k_left, int k_right) {
     if (right <= k_left || k_right <= left) {
-      return e_;
+      return id_;
     } else if (left <= k_left && k_right <= right) {
       return data_[k];
     } else {
@@ -33,14 +30,14 @@ class SegmentTree {
  public:
   T operator[](int pos) { return data_[pos + size_ - 1]; }
 
-  SegmentTree(int size, T e, Op op) : op_(op), e_(e) {
+  SegmentTree(int size, T id, const Op &op = Op()) : op_(op), id_(id) {
     size_ = 1;
     while (size_ < size) {
       size_ *= 2;
     }
 
     data_.resize(size_ * 2 - 1);
-    std::fill(data_.begin(), data_.end(), e_);
+    std::fill(data_.begin(), data_.end(), id_);
   };
 
   void Update(int pos, T val) {
