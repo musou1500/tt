@@ -1,6 +1,7 @@
 #ifndef SEGMENT_TREE_HH
 #define SEGMENT_TREE_HH
 
+#include <algorithm>
 #include <functional>
 #include <vector>
 
@@ -39,6 +40,7 @@ class SegmentTree {
     }
 
     data_.resize(size_ * 2 - 1);
+    std::fill(data_.begin(), data_.end(), e_);
   };
 
   void Update(int pos, T val) {
