@@ -94,27 +94,27 @@ MInt<T, M> Inv(const MInt<T, M> &n) {
   return Pow(n, static_cast<T>(M - 2));
 }
 
-template <class T, int M>
+template <class T>
 class BinCoef {
-  using ModInt = mod::MInt<T, M>;
-  std::vector<ModInt> f;
+  std::vector<T> f;
 
  public:
   BinCoef(int n) : f(n + 1) {
     f[0] = f[1] = 1;
     for (int i = 2; i <= n; i++) {
-      f[i] = ModInt(i) * f[i - 1];
+      f[i] = T(i) * f[i - 1];
     }
   }
 
-  ModInt NCM(int n, int m) {
+  T NCM(int n, int m) {
     if (n < m) {
       return 0;
     }
     return f[n] * mod::Inv(f[m] * f[n - m]);
   }
 
-  ModInt HCM(int n, int m) { return NCM(n + m - 1, m); }
+  T HCM(int n, int m) { return NCM(n + m - 1, m); }
+  T NPM(int n, int m) { return f[n] / f[n - m]; }
 };
 
 }  // namespace tt::mod
